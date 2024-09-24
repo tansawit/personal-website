@@ -1,13 +1,17 @@
-import Link from "next/link";
-import { draftMode } from "next/headers";
+import Link from 'next/link';
+import { draftMode } from 'next/headers';
 
-import Date from "./date";
-import CoverImage from "./cover-image";
-import Avatar from "./avatar";
-import MoreStories from "./more-stories";
+import Date from './date';
+import CoverImage from './cover-image';
+import Avatar from './avatar';
 
-import { getAllPosts } from "@/lib/api";
-import { CMS_NAME, CMS_URL } from "@/lib/constants";
+import { getAllPosts } from '@/lib/api';
+import { CMS_NAME, CMS_URL } from '@/lib/constants';
+
+import Experience from '@/components/experience';
+import Projects from '@/components/projects';
+import Introduction from '@/components/introduction';
+import RecentPosts from '@/components/recentPosts';
 
 function Intro() {
   return (
@@ -16,18 +20,15 @@ function Intro() {
         Blog.
       </h1>
       <h2 className="text-center md:text-left text-lg mt-5 md:pl-8">
-        A statically generated blog example using{" "}
+        A statically generated blog example using{' '}
         <a
           href="https://nextjs.org/"
           className="underline hover:text-success duration-200 transition-colors"
         >
           Next.js
-        </a>{" "}
-        and{" "}
-        <a
-          href={CMS_URL}
-          className="underline hover:text-success duration-200 transition-colors"
-        >
+        </a>{' '}
+        and{' '}
+        <a href={CMS_URL} className="underline hover:text-success duration-200 transition-colors">
           {CMS_NAME}
         </a>
         .
@@ -79,23 +80,18 @@ function HeroPost({
 export default async function Page() {
   const { isEnabled } = draftMode();
   const allPosts = await getAllPosts(isEnabled);
-  const heroPost = allPosts[0];
-  const morePosts = allPosts.slice(1);
+  const recentPosts = allPosts.slice(0, 3);
 
   return (
     <div className="container mx-auto px-5">
-      <Intro />
-      {heroPost && (
-        <HeroPost
-          title={heroPost.title}
-          coverImage={heroPost.coverImage}
-          date={heroPost.date}
-          author={heroPost.author}
-          slug={heroPost.slug}
-          excerpt={heroPost.excerpt}
-        />
-      )}
-      <MoreStories morePosts={morePosts} />
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-3">
+            <Projects />
+            <RecentPosts posts={recentPosts} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { draftMode } from "next/headers";
+import Image from "next/image";
+import { format } from "date-fns";
 
 import MoreStories from "../../more-stories";
 import Avatar from "../../avatar";
 import Date from "../../date";
 import CoverImage from "../../cover-image";
-
 import { Markdown } from "@/lib/markdown";
 import { getAllPosts, getPostAndMorePosts } from "@/lib/api";
 
@@ -27,43 +28,22 @@ export default async function PostPage({
 
   return (
     <div className="container mx-auto px-5">
-      <h2 className="mb-20 mt-8 text-2xl font-bold leading-tight tracking-tight md:text-4xl md:tracking-tighter">
-        <Link href="/" className="hover:underline">
-          Blog
-        </Link>
-        .
-      </h2>
-      <article>
-        <h1 className="mb-12 text-center text-6xl font-bold leading-tight tracking-tighter md:text-left md:text-7xl md:leading-none lg:text-8xl">
-          {post.title}
-        </h1>
-        <div className="hidden md:mb-12 md:block">
-          {post.author && (
-            <Avatar name={post.author.name} picture={post.author.picture} />
-          )}
-        </div>
-        <div className="mb-8 sm:mx-0 md:mb-16">
-          <CoverImage title={post.title} url={post.coverImage.url} />
-        </div>
-        <div className="mx-auto max-w-2xl">
-          <div className="mb-6 block md:hidden">
-            {post.author && (
-              <Avatar name={post.author.name} picture={post.author.picture} />
-            )}
+      <article className="mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-3xl font-mono">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-4">{post.title}</h1>
+        <time className="text-gray-500 mb-4 block">
+          <Date dateString={post.date} />
+        </time>
+        {post.coverImage && (
+          <div className="mb-8">
+            <CoverImage title={post.title} url={post.coverImage.url} />
           </div>
-          <div className="mb-6 text-lg">
-            <Date dateString={post.date} />
-          </div>
-        </div>
-
-        <div className="mx-auto max-w-2xl">
-          <div className="prose">
-            <Markdown content={post.content} />
-          </div>
+        )}
+        <div 
+          className="prose prose-invert max-w-none"
+        >
+          <Markdown content={post.content} />
         </div>
       </article>
-      <hr className="border-accent-2 mt-28 mb-24" />
-      <MoreStories morePosts={morePosts} />
     </div>
   );
 }

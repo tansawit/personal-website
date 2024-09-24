@@ -1,6 +1,8 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
-import { EXAMPLE_PATH, CMS_NAME } from "@/lib/constants";
+import './globals.css';
+import { Inter } from 'next/font/google';
+import { EXAMPLE_PATH, CMS_NAME } from '@/lib/constants';
+import Introduction from '@/components/introduction';
+import Experience from '@/components/experience';
 
 export const metadata = {
   title: `Next.js and ${CMS_NAME} Example`,
@@ -8,9 +10,9 @@ export const metadata = {
 };
 
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
+  variable: '--font-inter',
+  subsets: ['latin'],
+  display: 'swap',
 });
 
 function Footer() {
@@ -41,18 +43,25 @@ function Footer() {
   );
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function Sidebar() {
+  return (
+    <div className="">
+      <div className="sticky top-0">
+        <Introduction />
+      </div>
+    </div>
+  );
+}
+
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <body>
-        <section className="min-h-screen">
-          <main>{children}</main>
-          <Footer />
-        </section>
+      <div className="max-w-2xl mx-auto p-6 space-y-6">
+          <Sidebar />
+          {children}
+        </div>
       </body>
     </html>
   );
